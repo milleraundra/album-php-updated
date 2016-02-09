@@ -1,47 +1,34 @@
 <?php
     require_once __DIR__."/../vendor/autoload.php";
-    require_once __DIR__."/../src/Rectangle.php";
+    require_once __DIR__."/../src/CD.php";
 
     $app = new Silex\Application();
 
-    $app->get("/new_rectangle", function() {
-        return "
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
-            <title>Make a rectangle!</title>
-        </head>
-        <body>
-            <div class='container'>
-                <h1>Geometry Checker</h1>
-                <p>Enter the dimensions of your rectangle to see if it's a square.</p>
-                <form action='/view_rectangle'>
-                    <div class='form-group'>
-                      <label for='length'>Enter the length:</label>
-                      <input id='length' name='length' class='form-control' type='number'>
-                    </div>
-                    <div class='form-group'>
-                      <label for='width'>Enter the width:</label>
-                      <input id='width' name='width' class='form-control' type='number'>
-                    </div>
-                    <button type='submit' class='btn-success'>Create</button>
-                </form>
+
+    $app->get("/", function() {
+        $first_cd = new CD("Master of Reality", "Black Sabbath", "images/reality.jpg", 10.99);
+        $second_cd = new CD("Electric Ladyland", "Jimi Hendrix", "images/ladyland.jpg", 10.99);
+        $third_cd = new CD("Nevermind", "Nirvana", "images/nevermind.jpg", 10.99);
+        $fourth_cd = new CD("I don't get it", "Pork Lion", "images/porklion.jpg", 49.99);
+        $cds = array($first_cd, $second_cd, $third_cd, $fourth_cd);
+
+        $output = "";
+        foreach ($cds as $album) {
+            $output = $output . "<div class='row'>
+                <div class='col-md-6'>
+                    <img src=" . $album->getCoverArt() . ">
+                </div>
+                <div class='col-md-6'>
+                    <p>" . $album->getTitle() . "</p>
+                    <p>By " . $album->getArtist() . "</p>
+                    <p>$" . $album->getPrice() . "</p>
+                </div>
             </div>
-        </body>
-        </html>
-        ";
+            ";
+        }
+        return $output;
     });
 
-    $app->get("/view_rectangle", function() {
-    $my_rectangle = new Rectangle($_GET['length'], $_GET['width']);
-    $area = $my_rectangle->getArea();
-    if ($my_rectangle->isSquare()) {
-        return "<h1>Congratulations! You made a square! Its area is $area.</h1>";
-    } else {
-        return "<h1>Sorry! This isn't a square. Its area is $area.</h1>";
-    }
-    });
 
     return $app;
 
