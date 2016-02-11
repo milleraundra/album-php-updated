@@ -21,13 +21,26 @@
         $newAlbum = new CD($_POST['inputTitle'], $_POST['inputArtist'], $_POST['inputCoverArt']);
         $newAlbum->saveAlbum();
         $albums = $_SESSION['list_of_albums'];
-        var_dump($albums);
+        // var_dump($albums);
         return $app['twig']->render('index.html.twig', array('albums'=> $albums));
     });
 
     $app->post('/deleteAll', function() use ($app) {
         $_SESSION['list_of_albums'] = array();
         return $app['twig']->render('index.html.twig');
+    });
+
+    $app->post('/artistMatch', function() use ($app) {
+        $search = $_POST['searchArtist'];
+        $albums = $_SESSION['list_of_albums'];
+        $matching_artists = array();
+        foreach ($albums as $album) {
+            if ($search == $album->getArtist()) {
+                array_push($matching_artists, $album);
+            }
+        }
+        return $app['twig']->render('index.html.twig', array('albums'=> $matching_artists));
+
     });
 
     return $app;

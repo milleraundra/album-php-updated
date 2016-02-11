@@ -48,5 +48,14 @@
             array_push($_SESSION['list_of_albums'], $this);
         }
 
+        // function artistMatch($artist_input)
+        // {
+        //     $matching_artists = array();
+        //     if ($artist_input == $this->artist) {
+        //         array_push($matching_artists, $this);
+        //     }
+        //     return $matching_artists;
+        // }
+
     }
 ?>
