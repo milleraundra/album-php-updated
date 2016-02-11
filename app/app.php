@@ -34,10 +34,19 @@
         $search = $_POST['searchArtist'];
         $albums = $_SESSION['list_of_albums'];
         $matching_artists = array();
+
         foreach ($albums as $album) {
-            if ($search == $album->getArtist()) {
+            $test = strtolower($search);
+            $artist_name = $album->getArtist();
+            $artist_name = strtolower($artist_name);
+
+            if ($test == $artist_name) {
+
                 array_push($matching_artists, $album);
             }
+
+
+
         }
         return $app['twig']->render('search.html.twig', array('albumTest'=> $matching_artists));
 
