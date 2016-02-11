@@ -2,33 +2,33 @@
     require_once __DIR__."/../vendor/autoload.php";
     require_once __DIR__."/../src/CD.php";
 
+    session_start();
+    if(empty($_SESSION['list_of_albums'])) {
+        $_SESSION['list_of_albums'] = array();
+    }
+
     $app = new Silex\Application();
 
+    $app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path'=> __DIR__.'/../views'));
 
-    $app->get("/", function() {
-        $first_cd = new CD("Master of Reality", "Black Sabbath", "images/reality.jpg", 10.99);
-        $second_cd = new CD("Electric Ladyland", "Jimi Hendrix", "images/ladyland.jpg", 10.99);
-        $third_cd = new CD("Nevermind", "Nirvana", "images/nevermind.jpg", 10.99);
-        $fourth_cd = new CD("I don't get it", "Pork Lion", "images/porklion.jpg", 49.99);
-        $cds = array($first_cd, $second_cd, $third_cd, $fourth_cd);
+    $app->get("/", function() use ($app) {
+        return $app['twig']->render('index.html.twig');
 
-        $output = "";
-        foreach ($cds as $album) {
-            $output = $output . "<div class='row'>
-                <div class='col-md-6'>
-                    <img src=" . $album->getCoverArt() . ">
-                </div>
-                <div class='col-md-6'>
-                    <p>" . $album->getTitle() . "</p>
-                    <p>By " . $album->getArtist() . "</p>
-                    <p>$" . $album->getPrice() . "</p>
-                </div>
-            </div>
-            ";
-        }
-        return $output;
     });
 
+    $app->post('/new_album', function() use ($app) {
+
+        $newAlbum = new CD($_POST['inputTitle'], $_POST['inputArtist'], $_POST['inputCoverArt']);
+        $newAlbum->saveAlbum();
+        $albums = $_SESSION['list_of_albums'];
+        var_dump($albums);
+        return $app['twig']->render('index.html.twig', array('albums'=> $albums));
+    });
+
+    $app->post('/deleteAll', function() use ($app) {
+        $_SESSION['list_of_albums'] = array();
+        return $app['twig']->render('index.html.twig');
+    });
 
     return $app;
 

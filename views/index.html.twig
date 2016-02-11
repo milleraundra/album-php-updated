@@ -1,0 +1,35 @@
+
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <title></title>
+        </head>
+        <body>
+            <h1>YO!</h1>
+            {% if albums is empty %}
+            <h3>Welcome! Enter your first album below</h3>
+            {% else %}
+                {% for album in albums %}
+                    <img src="{{ album.getCoverArt() }}">
+                    <p>Name: {{ album.getTitle() }}</p>
+                    <p>By {{ album.getArtist() }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <form action="/new_album" method="post">
+                <label for="title">Title: </label>
+                <input id="inputTitle" name="inputTitle" type="text">
+                <label for="artist">Artist: </label>
+                <input id="inputArtist" name="inputArtist" type="text">
+                <label for="coverArt">Cover Art: </label>
+                <input id="inputCoverArt" name="inputCoverArt" type="text">
+                <button type="submit" name="button">Create Album</button>
+            </form>
+
+            <form class="" action="/deleteAll" method="post">
+                <button type="submit" name="button">Delete All</button>
+            </form>
+
+
+        </body>
+    </html>
