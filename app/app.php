@@ -36,17 +36,13 @@
         $matching_artists = array();
 
         foreach ($albums as $album) {
-            $test = strtolower($search);
+            $search = strtolower($search);
             $artist_name = $album->getArtist();
             $artist_name = strtolower($artist_name);
 
-            if ($test == $artist_name) {
-
+            if (strpos($artist_name, $search) !== false) {
                 array_push($matching_artists, $album);
             }
-
-
-
         }
         return $app['twig']->render('search.html.twig', array('albumTest'=> $matching_artists));
 
