@@ -12,8 +12,8 @@
     $app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path'=> __DIR__.'/../views'));
 
     $app->get("/", function() use ($app) {
-        return $app['twig']->render('index.html.twig');
-
+        $albums = $_SESSION['list_of_albums'];
+        return $app['twig']->render('index.html.twig', array('albums'=> $albums));
     });
 
     $app->post('/new_album', function() use ($app) {
@@ -39,7 +39,7 @@
                 array_push($matching_artists, $album);
             }
         }
-        return $app['twig']->render('index.html.twig', array('albums'=> $matching_artists));
+        return $app['twig']->render('search.html.twig', array('albumTest'=> $matching_artists));
 
     });
 

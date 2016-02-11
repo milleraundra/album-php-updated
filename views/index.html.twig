@@ -6,11 +6,6 @@
         </head>
         <body>
             <h1>Your Albums</h1>
-            <form class="" action="/artistMatch" method="post">
-                <label for="searchArtist">Search by Artist</label>
-                <input type="text" name="searchArtist" value="">
-                <button type="submit" name="button">Search!</button>
-            </form>
 
             <form action="/new_album" method="post">
                 <label for="title">Title: </label>
@@ -22,19 +17,30 @@
                 <button type="submit" name="button">Create Album</button>
             </form>
 
-            <form class="" action="/deleteAll" method="post">
-                <button type="submit" name="button">Delete All</button>
-            </form>
 
             {% if albums is empty %}
             <h3>Welcome! Enter your first album below</h3>
             {% else %}
+
+            <form class="" action="/deleteAll" method="post">
+                <button type="submit" name="button">Delete All</button>
+            </form>
+
+            <form class="" action="/artistMatch" method="post">
+                <label for="searchArtist">Search by Artist</label>
+                <input type="text" name="searchArtist" value="">
+                <button type="submit" name="button">Search!</button>
+            </form>
+
                 {% for album in albums %}
                     <img src="{{ album.getCoverArt() }}">
                     <p>Name: {{ album.getTitle() }}</p>
                     <p>By {{ album.getArtist() }}</p>
                 {% endfor %}
             {% endif %}
+
+
+
 
         </body>
     </html>
